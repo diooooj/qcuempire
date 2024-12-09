@@ -1,0 +1,35 @@
+/* Add Product */
+.add-body a {
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.add-body a:hover {
+    color: #F3C623;
+}
+
+.add-body textarea {
+    height: 200px;
+}
+
+.add-body input {
+    width: 100px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+    display: block;
+}
+
+.add-body .detail-card-information .flex {
+    gap: 20px;
+}
+
+#price {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXBoaWxpcHBpbmUtcGVzbyI+PHBhdGggZD0iTTIwIDExSDQiLz48cGF0aCBkPSJNMjAgN0g0Ii8+PHBhdGggZD0iTTcgMjFWNGExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDAgMTJINyIvPjwvc3ZnPg==');
+    background-position: 10px 6px;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    background-size: 14%;
+}

@@ -1,0 +1,150 @@
+<div class="body">
+  <h1 class="h1-2">P’KA CHIPS</h1>
+  <div class="container px-20 detail-body">
+    <div class="flex">
+      <div class="detail-card">
+        <img src="/images/cheese.svg" alt="<!-- NAME -->" />
+        <h2 class="shadow"><!-- NAME --></h2>
+        <p><!-- DETAILS --></p>
+      </div>
+      <div class="detail-card-information">
+        <img src="/images/logo.svg" alt="P’KA CHIPS Logo" />
+        <h4 class="shadow">
+          P’KA CHIPS -
+          <!-- NAME -->
+        </h4>
+        <p>
+          Stock:
+          <!-- STOCK -->
+        </p>
+        <h4>₱<!-- PRICE --></h4>
+        <form id="addToCartForm" method="POST" action="/cart/add">
+          <input
+            type="hidden"
+            id="productId"
+            name="productId"
+            value="<!-- PRODUCTID -->"
+          />
+          <input type="hidden" id="spicyLevel" name="spicyLevel" value="none" />
+        
+          <p>Spicy level:</p>
+        
+          <div class="radio-group">
+            <label class="radio-container">
+              None
+              <input
+                type="radio"
+                name="radio"
+                value="none"
+                onclick="chooseSpice(this.value)"
+                checked
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label class="radio-container">
+              50%
+              <input
+                type="radio"
+                name="radio"
+                value="50%"
+                onclick="chooseSpice(this.value)"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label class="radio-container">
+              75%
+              <input
+                type="radio"
+                name="radio"
+                value="75%"
+                onclick="chooseSpice(this.value)"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label class="radio-container">
+              100%
+              <input
+                type="radio"
+                name="radio"
+                value="100%"
+                onclick="chooseSpice(this.value)"
+              />
+              <span class="checkmark"></span>
+            </label>
+            <label class="radio-container">
+              Others
+              <input
+                type="radio"
+                name="radio"
+                value="others"
+                onclick="showCustomSpicyInput()"
+              />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        
+          <div id="customSpicyLevelContainer" style="display: none; margin-top: 10px;">
+            <label for="customSpicyLevel">Enter custom spice level:</label>
+            <input
+              type="text"
+              id="customSpicyLevel"
+              name="customSpicyLevel"
+              placeholder="e.g., Extra Hot, Mild"
+              oninput="updateCustomSpice()"
+            />
+          </div>
+        
+          <label for="quantity">Quantity:</label>
+          <input type="number" id="quantity" name="quantity" min="1" value="1" />
+          <button type="submit" class="btn btn-2">ADD TO CART</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function chooseSpice(value) {
+    document.getElementById("spicyLevel").value = value;
+    const customContainer = document.getElementById("customSpicyLevelContainer");
+
+    // Hide custom input if another option is selected
+    if (value !== "others") {
+      customContainer.style.display = "none";
+      document.getElementById("customSpicyLevel").value = "";
+    }
+  }
+
+  function showCustomSpicyInput() {
+    const customContainer = document.getElementById("customSpicyLevelContainer");
+    customContainer.style.display = "block";
+    document.getElementById("spicyLevel").value = "";
+  }
+
+  function updateCustomSpice() {
+    const customValue = document.getElementById("customSpicyLevel").value;
+    document.getElementById("spicyLevel").value = customValue;
+  }
+
+  document.getElementById("addToCartForm").addEventListener("submit", function (event) {
+    const quantity = document.getElementById("quantity").value;
+    const spicyLevel = document.getElementById("spicyLevel").value;
+
+    // Validate quantity
+    if (quantity <= 0) {
+      alert("Please select a valid quantity (greater than 0).");
+      event.preventDefault();
+      return;
+    }
+
+    // Validate spice level
+    if (!spicyLevel || (spicyLevel === "" && document.querySelector('input[name="radio"]:checked').value === "others" && !document.getElementById("customSpicyLevel").value)) {
+      alert("Please select a spicy level or specify one under 'Others'.");
+      event.preventDefault();
+      return;
+    }
+
+    // Confirm changes and add to cart
+    alert("Item added to cart!.");
+  });
+</script>

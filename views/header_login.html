@@ -1,0 +1,17 @@
+<header>
+  <div id="header">
+      <a href="/login" id="logo" class="shadow">QCU Empire</a>
+      <div id="header-right" class="shadow">
+          <div class="header-text">
+              <a onclick="openForm('loginAs')">Log in</a>
+              <a onclick="openForm('register')">Register</a>
+          </div>
+      </div>
+  </div>
+</header>
+
+<script>
+  function openForm(form) {
+    document.getElementById(form).style.display = "block";
+  }
+</script>

@@ -1,0 +1,180 @@
+<div class="body">
+  <div class="container">
+    <div class="profile-body">
+      <form id="profileForm" method="POST" action="/user/saveChanges" enctype="multipart/form-data">
+        <input type="hidden" id="removeImageInput" name="removeImage" value="false" />
+        <a class="btn btn-1" style="float: right; font-size: 16px;" href="/user/logout">Log Out</a>
+        <h2 class="shadow">Profile</h2>
+        <h5>Update your photo and password here.</h5>
+        <hr />
+        <div class="profile-picture py-2">
+          <img id="profileImage" src="<!-- IMAGE -->" alt="Profile Picture" />
+          <div class="profile-picture-details">
+            <h2 class="shadow">Profile Picture</h2>
+            <div class="profile-picture-buttons">
+                <input
+                type="file"
+                id="uploadImageInput"
+                name="profilePicture"
+                accept="image/*"
+                style="display: none"
+              />
+              <button class="btn btn-1" id="uploadImageButton" type="button">Upload Image</button>
+              <button class="btn btn-1 profile-delete" id="removeImageButton" type="button">Remove</button>
+                        </div>
+            <p>At least 800x800px recommended</p>
+            <p>JPG or PNG is allowed</p>
+          </div>
+        </div>
+        <div class="profile-form">
+          <div>
+            <h3>Personal Information</h3>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" value="<!-- NAME -->" />
+
+            <label for="studNo">Student No:</label>
+            <input
+              type="text"
+              id="studNo"
+              name="studNo"
+              value="<!-- STUDNO -->"
+            />
+
+            <label for="course">Course:</label>
+            <input
+              type="text"
+              id="course"
+              name="course"
+              value="<!-- COURSE -->"
+            />
+
+            <label for="contactNo">Contact No:</label>
+            <input
+              type="text"
+              id="contactNo"
+              name="contactNo"
+              value="<!-- CONTACTNO -->"/>
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" value="<!-- EMAIL -->" />
+
+            <label for="address">Address:</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value="<!-- ADDRESS -->"
+            />
+
+            <label for="fbLink">FB Link:</label>
+            <input
+              type="url"
+              id="fbLink"
+              name="fbLink"
+              value="<!-- FBLINK -->"
+            />
+          </div>
+          <div>
+            <h3>Change Password</h3>
+            <label for="oldPassword">Old Password</label>
+            <input type="password" id="oldPassword" name="oldPassword" />
+
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" />
+
+            <label for="confirmNewPassword">Confirm New Password</label>
+            <input
+              type="password"
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+            />
+          </div>
+        </div>
+        <div class="profile-action">
+          <button class="btn btn-1" id="saveChangesButton" type="submit">
+            Save Changes
+          </button>
+          <button class="btn btn-1" id="cancelButton" type="button">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+
+
+    const uploadImageInput = document.getElementById("uploadImageInput");
+    const profileImage = document.getElementById("profileImage");
+    const uploadImageButton = document.getElementById("uploadImageButton");
+    const removeImageButton = document.getElementById("removeImageButton");
+    const removeImageInput = document.getElementById("removeImageInput");
+    const cancelButton = document.getElementById("cancelButton");
+    
+
+    // Upload image preview logic
+    uploadImageButton.addEventListener("click", () => uploadImageInput.click());
+    uploadImageInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          profileImage.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Remove image logic
+    removeImageButton.addEventListener("click", () => {
+  profileImage.src = "/images/profile.jpg"; // Reset image preview to default
+  uploadImageInput.value = ""; // Clear file input
+  removeImageInput.value = "true"; // Set removal flag
+});
+
+    // Cancel button logic
+    cancelButton.addEventListener("click", () => {
+      location.reload(); // Reload page to discard changes
+    });
+  });
+
+  const profileForm = document.getElementById("profileForm");
+
+profileForm.addEventListener("submit", (event) => {
+  event.preventDefault(); // Prevent default form submission
+
+  // Confirm changes before submitting
+  const confirmChanges = confirm("Are you sure you want to save these changes?");
+  if (!confirmChanges) {
+    return; // Exit if user cancels
+  }
+
+  // Prepare form data for submission
+  const formData = new FormData(profileForm);
+
+  fetch("/user/saveChanges", {
+    method: "POST",
+    body: formData,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.message) {
+        // Show success confirmation
+        alert(data.message);
+
+        // Redirect to /user
+        window.location.href = "/user";
+      } else {
+        alert("An error occurred while saving the profile.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error saving profile:", error);
+      alert("An unexpected error occurred. Please try again.");
+    });
+});
+
+</script>

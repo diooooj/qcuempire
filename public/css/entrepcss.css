@@ -1,0 +1,93 @@
+/* orders */
+.order-body  {
+    text-align: left;
+}
+
+.order-body h1 {
+    color: #FDE7BE;
+    line-height: 32px;
+}
+
+.order-body .navs {
+    gap: 20px;
+}
+
+.order-body .navs > a {
+    color: #581c1c;
+    text-decoration: none;
+    background-color: #842B24;
+    padding: 5px 30px;
+    border-radius: 20px;
+    border-collapse: collapse;
+    margin: 20px 0px;
+    border: 2px solid #842B24;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.order-body .navs > a.active,
+.order-body .navs > a:hover {
+    border-color: #FDE7BE;
+    color: #FDE7BE; 
+    box-sizing: border-box;
+
+}
+
+.order-container {
+    background-color: #842B24;
+    padding: 20px 30px;
+    border-radius: 15px;
+    gap: 20px;
+} 
+
+.order-container img {
+    height: 120px;
+    width: auto;
+}
+
+.order-container h4 {
+    color: #F5B522;
+    font-size:24px;
+    font-weight: normal;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.order-container p {
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+
+}
+
+.order-buttons {
+    text-align: right;
+}
+
+.order-buttons button {
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 15px;
+    text-decoration: none;
+    border: none;
+    color: #FDE7BE;
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.order-buttons button:nth-child(1) {
+    background: #3A7417;
+}
+
+.order-buttons button:nth-child(1):hover {
+    background: #4C8E1F;
+    transform: scale(1.05);
+}
+
+.order-buttons button:nth-child(2) {
+    background: #8C161D;
+}
+
+.order-buttons button:nth-child(2):hover {
+    background: #A91B24; 
+    transform: scale(1.05); 
+}
+

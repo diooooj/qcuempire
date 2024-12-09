@@ -1,0 +1,227 @@
+<div class="body">
+  <div class="container">
+    <div class="cart-body checkOut-body">
+      <h1 class="shadow">Check Out</h1>
+      <form id="checkoutForm" method="POST" action="/order/checkout">
+        <div class="flex">
+          <div class="personal-information">
+            <div class="check-out-loc">
+              <h2 style="margin-bottom:20px;">Are you ordering from QCU San Bartolome Campus?</h2>
+              <div class="radio-group">
+                <label class="radio-container">
+                  Yes
+                  <input
+                    type="radio"
+                    name="campus"
+                    value="yes"
+                    onclick="toggleLocationSection(true)"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+
+                <label class="radio-container">
+                  No
+                  <input
+                    type="radio"
+                    name="campus"
+                    value="no"
+                    onclick="toggleLocationSection(false)"
+                    checked
+                  />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <!-- Location Section -->
+              <div id="locationSection" style="display: none;">
+                <h2>Location</h2>
+                <select name="location" id="location" onchange="handleLocationChange()">
+                  <option value="" disabled selected>Choose your location...</option>
+                  <option value="Upark">Upark</option>
+                  <option value="Open Grounds">Open Grounds</option>
+                  <option value="Bautista Bldg">Bautista Bldg</option>
+                  <option value="Belmonte Bldg">Belmonte Bldg</option>
+                  <option value="Academic Bldg">Academic Bldg</option>
+                  <option value="Old Bldg">Old Bldg</option>
+                  <option value="Techvoc Bldg">Techvoc Bldg</option>
+                  <option value="others">others...</option>
+                </select>
+                <input
+                  type="text"
+                  id="otherLocation"
+                  placeholder="Please Specify..."
+                  style="display: none;"
+                  onblur="updateCombinedLocation()"
+                />
+                <input
+                  type="text"
+                  id="building"
+                  placeholder="Specify which room or floor..."
+                  style="display: none;"
+                  onblur="updateCombinedLocation()"
+                />
+                <!-- Hidden input for combined location -->
+                <input type="hidden" id="locationCombined" name="locationCombined" />
+              </div>
+            </div>
+            <hr style="margin: 20px 0px" />
+            <h2 style="line-height: 40px;">Payment Method:</h2>
+            <div>
+              <div class="radio-group">
+                <label class="radio-container">
+                  Cash on Delivery
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Cash on Delivery"
+                    onclick="updatePaymentMethod(this)"
+                    checked
+                  />
+                  <span class="checkmark"></span>
+                </label>
+
+                <label class="radio-container" onclick="toggleGCashForm()">
+                  Gcash
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="Gcash"
+                    onclick="updatePaymentMethod(this), toggleGCashForm()"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              <!-- Hidden input for selected payment method -->
+              <input type="hidden" id="selectedPaymentMethod" name="selectedPaymentMethod" value="Cash on Delivery" />
+              <hr style="margin: 20px 0px">
+              <div class="cart-total">
+                <p id="totalAmount">Total Payment: ₱<!-- Placeholder for total amount --></p>
+                <button type="submit" class="btn btn-3">PLACE ORDER</button>
+              </div>
+            </div>
+          </div>
+          <div class="checkOut-table">
+            <table class="cart-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody id="cartItems">
+                <!-- Placeholder for cart items -->
+                <tr>
+                  <td></td>
+                  <td>Total:</td>
+                  <td>₱<!-- Placeholder for total amount --></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="gCashForm" class="form-popup" style="display: none;">
+  <div class="container">
+    <p>Scan the QR Code below using your GCASH App to complete your payment</p>
+    <br>
+    <img src="/images/gcash.svg" width="100%">
+  </div>
+  <a onclick="closeForm('gCashForm')" id="removePopUp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+      <path d="M18 6 6 18"/>
+      <path d="m6 6 12 12"/>
+    </svg>
+  </a>
+</div>
+
+<script>
+  function toggleLocationSection(isVisible) {
+    const locationSection = document.getElementById("locationSection");
+    const locationInput = document.getElementById("location");
+    const otherLocationInput = document.getElementById("otherLocation");
+    const buildingInput = document.getElementById("building");
+
+    if (isVisible) {
+      locationSection.style.display = "block";
+      locationInput.required = true;
+    } else {
+      locationSection.style.display = "none";
+      locationInput.required = false;
+      otherLocationInput.style.display = "none";
+      buildingInput.style.display = "none";
+      locationInput.value = "";
+      otherLocationInput.value = "";
+      buildingInput.value = "";
+      document.getElementById("locationCombined").value = "";
+    }
+  }
+
+  // Handle location dropdown change
+  function handleLocationChange() {
+    const location = document.getElementById("location").value;
+    const otherLocationInput = document.getElementById("otherLocation");
+    const buildingInput = document.getElementById("building");
+
+    if (location === "others") {
+      otherLocationInput.style.display = "block";
+      buildingInput.style.display = "none";
+      otherLocationInput.required = true;
+      buildingInput.required = false;
+    } else if (location.includes("Bldg")) {
+      otherLocationInput.style.display = "none";
+      buildingInput.style.display = "block";
+      buildingInput.required = true;
+      otherLocationInput.required = false;
+    } else {
+      otherLocationInput.style.display = "none";
+      buildingInput.style.display = "none";
+      otherLocationInput.required = false;
+      buildingInput.required = false;
+    }
+
+    updateCombinedLocation();
+  }
+
+  // Update combined location hidden input
+  function updateCombinedLocation() {
+    const location = document.getElementById("location").value;
+    const otherLocation = document.getElementById("otherLocation").value;
+    const building = document.getElementById("building").value;
+
+    const combinedLocation = location === "others" 
+      ? otherLocation
+      : location.includes("Bldg") 
+      ? `${location}, ${building}`
+      : location;
+
+    document.getElementById("locationCombined").value = combinedLocation;
+  }
+
+  function updatePaymentMethod(radio) {
+    document.getElementById("selectedPaymentMethod").value = radio.value;
+  }
+
+  function toggleGCashForm() {
+    const gCashForm = document.getElementById("gCashForm");
+    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+    if (paymentMethod === "Gcash") {
+      gCashForm.style.display = "block";  // Show Gcash div when selected
+    } else {
+      gCashForm.style.display = "none";   // Hide Gcash div if not selected
+    }
+  }
+
+  function openForm(form) {
+    document.getElementById(form).style.display = "block";
+  }
+  
+  function closeForm(form) {
+    document.getElementById(form).style.display = "none";
+  }
+</script>
